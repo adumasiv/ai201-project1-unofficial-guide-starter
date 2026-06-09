@@ -9,7 +9,7 @@
 
 ## Domain
 
-<!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
+Off-campus housing reviews for Eastern Michigan University — useful because roughly 75% of EMU students are commuters and live in unaffiliated housing throughout the surrounding area. Finding reliable information can be difficult because official housing websites primarily showcase marketing photos and curated reviews, which may not accurately reflect the actual living experience, property management quality, safety, maintenance responsiveness, noise levels, or overall value. As a result, students who choose housing based solely on information provided by housing websites can be led astray.
 
 ---
 
@@ -18,18 +18,18 @@
 <!-- List your specific sources: URLs, subreddit names, forum threads, or file descriptions.
      Aim for at least 10 sources that together cover different subtopics or perspectives within your domain. -->
 
-| # | Source | Description | URL or location |
-|---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| # | Source | Type | URL or file path |
+|---|--------|------|-----------------|
+| 1 |Reddit - r/ypsi - Looking for apartments, advice?|Website |https://www.reddit.com/r/ypsi/comments/16brlnh/looking_for_apartments_advice/ |
+| 2 |Reddit - r/ypsi |Website - Moving to Ypsi|https://www.reddit.com/r/ypsi/comments/1ixyfzz/moving_to_ypsi/ |
+| 3 |Reddit - r/AnnArbor - Good, trouble-free apartment complexes for EMU student|Website |https://www.reddit.com/r/AnnArbor/comments/wtibvu/good_troublefree_apartment_complexes_for_emu/ |
+| 4 |ApartmentRatings |Website |https://www.apartmentratings.com/mi/ypsilanti/ |
+| 5 |Yelp - apartments Ypsilanti, MI |Website | |https://www.yelp.com/search?find_desc=apartments&find_loc=Ypsilanti%2C+MI
+| 6 |Reddit - r/ypsi - Affordable & safe apartments in ypsi?|Website |https://www.reddit.com/r/ypsi/comments/1f5rrjj/affordable_safe_apartments_in_ypsi/ |
+| 7 |Reddit - r/ypsi - Are there any high quality walkable apartments near downtown Ypsi or Depot Town?|Website |https://www.reddit.com/r/ypsi/comments/17k0bh7/are_there_any_high_quality_walkable_apartments/ |
+| 8 |Niche - Eastern Michigan University |Website |https://www.niche.com/colleges/eastern-michigan-university/campus-life/ |
+| 9 |Reddit - r/ypsi - Restaurant Recommendations?|Website |https://www.reddit.com/r/ypsi/comments/15s7rji/restaurant_recommendations/ |
+| 10 |City of Ypsilant - Housing Affordability & Accessibility |Document |https://www.cityofypsilanti.com/DocumentCenter/View/1940/Open-Forum-Public-Slideshow?bidId= |
 
 ---
 
@@ -41,11 +41,11 @@
      A review-heavy corpus warrants different chunking than a long FAQ. -->
 
 **Chunk size:**
-
+300 charcter chunks.
 **Overlap:**
-
+50 characters
 **Reasoning:**
-
+The documents used are long reddit forum based documents. This warrants a longer character chunk to keep the ideas of each paragragh together. The overlap is a little more than 15% of the chunk to preserve the context of the average sentence length in a reddit post.
 ---
 
 ## Retrieval Approach
