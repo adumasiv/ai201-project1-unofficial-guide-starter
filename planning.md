@@ -57,11 +57,11 @@ The documents used are long reddit forum based documents. This warrants a longer
      support, accuracy on domain-specific text, latency? -->
 
 **Embedding model:**
-
+bge-large-en-v1.5
 **Top-k:**
-
+8
 **Production tradeoff reflection:**
-
+Accuracy on domain-specific text. Larger and more expensive models would give more accurate responces. If cost wasn't a constraint, accuracy would be valued above all. 
 ---
 
 ## Evaluation Plan
@@ -73,11 +73,11 @@ The documents used are long reddit forum based documents. This warrants a longer
 
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 |What do residents say about BEAL properies? |Do not rent from these properties. |
+| 2 |What do residents say about the Depot Town Area? |Nice with affordable rent. |
+| 3 |Would past residents recommend living at Lakeshore? |Yes, they would recommend it. |
+| 4 |Is the community around Lakeshore Walkable? |No, you need a car to get places. |
+| 5 |Should a student rent an apartment at Aspen Chase or Waverly on the Lake?|Waverly on the Lake. |
 
 ---
 
@@ -87,9 +87,9 @@ The documents used are long reddit forum based documents. This warrants a longer
      Consider: noisy or inconsistent documents, missing source attribution, off-topic
      retrieval, chunks that split key information across boundaries. -->
 
-1.
+1.Boundary splits severing sentiment pivots. The unregulated lengths of reddit post can either go way under or over 300 characters. So there is a risk that the chunks lose some context.
 
-2.
+2.Upvoted opinions drowning out minority opinions. The way reddit is structured with the highest upvoted at the top have the chance of skewing results before retrieval
 
 ---
 
@@ -101,6 +101,41 @@ The documents used are long reddit forum based documents. This warrants a longer
      You can use ASCII art, a Mermaid diagram, or embed a sketch as an image.
      You'll use this diagram as context when prompting AI tools to implement each stage. -->
 
+EMU Unofficial Guide — RAG Pipeline
+─────────────────────────────────────────────────────────────────────────────────
+
+ ┌─────────────┐    ┌──────────────────┐    ┌─────────────────────┐
+ │  INGESTION  │    │    CHUNKING      │    │     EMBEDDING       │
+ │             │    │                  │    │                     │
+ │  10 Reddit  │───▶│  300 char chunks │───▶│  bge-large-en-v1.5  │
+ │  Articles   │    │  60 char overlap │    │                     │
+ │             │    │  (recommended)   │    │  ┌───────────────┐  │
+ └─────────────┘    └──────────────────┘    │  │   ChromaDB    │  │
+                                            │  │ Vector Store  │  │
+                                            │  └───────────────┘  │
+                                            └─────────────────────┘
+                                                       │
+                                                       ▼
+                                            ┌─────────────────────┐
+                                            │      RETRIEVAL      │
+                                            │                     │
+                                            │  Fetch  k = 20      │
+                                            │       │             │
+                                            │       ▼             │
+                                            │  bge-reranker-large │
+                                            │       │             │
+                                            │       ▼             │
+                                            │  Pass top k = 8     │
+                                            └─────────────────────┘
+                                                       │
+                                                       ▼
+                                            ┌─────────────────────┐
+                                            │     GENERATION      │
+                                            │                     │
+                                            │  Groq               │
+                                            │  llama-3.3-70b      │
+                                            │  -versatile         │
+                                            └─────────────────────┘
 ---
 
 ## AI Tool Plan
@@ -116,7 +151,14 @@ The documents used are long reddit forum based documents. This warrants a longer
      with my specified chunk size and overlap" is a plan. -->
 
 **Milestone 3 — Ingestion and chunking:**
+- Give Claude the Documents table and Chunking Strategy section; ask it to produce ingest_documents() and chunk_text(text, chunk_size=300, overlap=50) with source URL metadata attached to each chunk
+- Verify by inspecting 5 chunks from source #1 — confirm no chunk exceeds 300 chars, consecutive chunks share ~50 chars, and metadata is populated
 
 **Milestone 4 — Embedding and retrieval:**
+- Give Claude the Retrieval Approach section and Architecture diagram; ask it to implement embed_and_store() using bge-large-en-v1.5 into ChromaDB, retrieve(query, k=20), and rerank(query, chunks, top_n=8) using bge-reranker-large
+- Verify by running all 5 Evaluation Plan questions through the full retrieve -> rerank pipeline and confirming the correct chunk surfaces in the top 8 for each
 
 **Milestone 5 — Generation and interface:**
+- Give Claude the Generation stage of the Architecture diagram, the Evaluation Plan, and the Anticipated Challenges section; ask it to implement generate(query, chunks) calling Groq llama-3.3-70b-versatile with a system prompt that cites source URLs and flags one-sided retrieval, plus a minimal CLI or Gradio interface
+- Verify by running all 5 Evaluation Plan questions end-to-end and confirming each answer matches the expected answer and includes at least one cited source URL
+
