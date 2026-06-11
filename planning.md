@@ -15,9 +15,6 @@ Off-campus housing reviews for Eastern Michigan University — useful because ro
 
 ## Documents
 
-<!-- List your specific sources: URLs, subreddit names, forum threads, or file descriptions.
-     Aim for at least 10 sources that together cover different subtopics or perspectives within your domain. -->
-
 | # | Source | Type | URL or file path |
 |---|--------|------|-----------------|
 | 1 |Reddit - r/ypsi - Looking for apartments, advice?|Website |https://www.reddit.com/r/ypsi/comments/16brlnh/looking_for_apartments_advice/ |
@@ -35,17 +32,12 @@ Off-campus housing reviews for Eastern Michigan University — useful because ro
 
 ## Chunking Strategy
 
-<!-- How will you split documents into chunks?
-     State your chunk size (in tokens or characters), overlap size, and explain why those
-     numbers fit the structure of your documents.
-     A review-heavy corpus warrants different chunking than a long FAQ. -->
-
 **Chunk size:**
-300 charcter chunks.
+300 character chunks.
 **Overlap:**
 50 characters
 **Reasoning:**
-The documents used are long reddit forum based documents. This warrants a longer character chunk to keep the ideas of each paragragh together. The overlap is a little more than 15% of the chunk to preserve the context of the average sentence length in a reddit post.
+The documents used are long reddit forum based documents. This warrants a longer character chunk to keep the ideas of each paragraph together. The overlap is a little more than 15% of the chunk to preserve the context of the average sentence length in a reddit post.
 ---
 
 ## Retrieval Approach
