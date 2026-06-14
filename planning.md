@@ -35,18 +35,12 @@ Off-campus housing reviews for Eastern Michigan University — useful because ro
 **Chunk size:**
 300 character chunks.
 **Overlap:**
-50 characters
+60 characters
 **Reasoning:**
 The documents used are long reddit forum based documents. This warrants a longer character chunk to keep the ideas of each paragraph together. The overlap is a little more than 15% of the chunk to preserve the context of the average sentence length in a reddit post.
 ---
 
 ## Retrieval Approach
-
-<!-- Which embedding model are you using (e.g., all-MiniLM-L6-v2 via sentence-transformers)?
-     How many chunks will you retrieve per query (top-k)?
-     If you were deploying this for real users and cost wasn't a constraint, what tradeoffs
-     would you weigh in choosing a different embedding model — context length, multilingual
-     support, accuracy on domain-specific text, latency? -->
 
 **Embedding model:**
 bge-large-en-v1.5
@@ -57,11 +51,6 @@ Accuracy on domain-specific text. Larger and more expensive models would give mo
 ---
 
 ## Evaluation Plan
-
-<!-- List your 5 test questions with their expected correct answers.
-     Questions should be specific enough that you can judge whether the system's response
-     is right or wrong. "What are good dining halls?" is too vague.
-     "What do students say about wait times at [dining hall name] during lunch?" is testable. -->
 
 | # | Question | Expected answer |
 |---|----------|-----------------|

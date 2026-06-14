@@ -14,17 +14,13 @@ Off-campus housing reviews for Eastern Michigan University — useful because ro
 
 ## Document Sources
 
-<!-- List every source you collected documents from.
-     Be specific: include URLs, subreddit names, forum thread titles, or file names.
-     Aim for variety — sources that together cover different subtopics or perspectives. -->
-
 | # | Source | Type | URL or file path |
 |---|--------|------|-----------------|
 | 1 |Reddit - r/ypsi - Looking for apartments, advice?|Website |https://www.reddit.com/r/ypsi/comments/16brlnh/looking_for_apartments_advice/ |
 | 2 |Reddit - r/ypsi |Website - Moving to Ypsi|https://www.reddit.com/r/ypsi/comments/1ixyfzz/moving_to_ypsi/ |
 | 3 |Reddit - r/AnnArbor - Good, trouble-free apartment complexes for EMU student|Website |https://www.reddit.com/r/AnnArbor/comments/wtibvu/good_troublefree_apartment_complexes_for_emu/ |
 | 4 |ApartmentRatings |Website |https://www.apartmentratings.com/mi/ypsilanti/ |
-| 5 |Yelp - apartments Ypsilanti, MI |Website | |https://www.yelp.com/search?find_desc=apartments&find_loc=Ypsilanti%2C+MI
+| 5 |Yelp - apartments Ypsilanti, MI |Website |https://www.yelp.com/search?find_desc=apartments&find_loc=Ypsilanti%2C+MI |
 | 6 |Reddit - r/ypsi - Affordable & safe apartments in ypsi?|Website |https://www.reddit.com/r/ypsi/comments/1f5rrjj/affordable_safe_apartments_in_ypsi/ |
 | 7 |Reddit - r/ypsi - Are there any high quality walkable apartments near downtown Ypsi or Depot Town?|Website |https://www.reddit.com/r/ypsi/comments/17k0bh7/are_there_any_high_quality_walkable_apartments/ |
 | 8 |Niche - Eastern Michigan University |Website |https://www.niche.com/colleges/eastern-michigan-university/campus-life/ |
@@ -35,65 +31,50 @@ Off-campus housing reviews for Eastern Michigan University — useful because ro
 
 ## Chunking Strategy
 
-<!-- Describe your chunking approach with enough specificity that someone else could reproduce it.
-     Include:
-     - Chunk size (characters or tokens) and why that size fits your documents
-     - Overlap size and why (or why not) you used overlap
-     - Any preprocessing you did before chunking (e.g., stripping HTML, removing headers)
-     - What your final chunk count was across all documents -->
-
 **Chunk size:**
-
+300 character chunks.
 **Overlap:**
-
+50 characters
 **Why these choices fit your documents:**
-
+The documents used are long reddit forum based documents. This warrants a longer character chunk to keep the ideas of each paragraph together. The overlap is a little more than 15% of the chunk to preserve the context of the average sentence length in a reddit post.
 **Final chunk count:**
-
+281
 ---
 
 ## Embedding Model
 
-<!-- Name the embedding model you used and explain your choice.
-     Then answer: if you were deploying this system for real users and cost wasn't a constraint,
-     what tradeoffs would you weigh in choosing a different model?
-     Consider: context length limits, multilingual support, accuracy on domain-specific text,
-     latency, and local vs. API-hosted. -->
-
-**Model used:**
-
+**Embedding model:**
+bge-large-en-v1.5
+**Top-k:**
+8
 **Production tradeoff reflection:**
-
+Accuracy on domain-specific text. Larger and more expensive models would give more accurate responces. If cost wasn't a constraint, accuracy would be valued above all. 
 ---
 
 ## Grounded Generation
 
-<!-- Explain how your system enforces grounding — how does it prevent the LLM from answering
-     beyond the retrieved documents?
-     Describe both your system prompt (what instruction you gave the model) and any structural
-     choices (e.g., how you formatted the context, whether you filtered low-relevance chunks).
-     Do not just say "I told it to use the documents" — show the actual instruction or explain
-     the mechanism. -->
-
 **System prompt grounding instruction:**
+You are a helpful assistant for the EMU Unofficial Housing Guide.
+Answer the question using only the information in the provided documents.
+Do not use prior knowledge, training data, or any outside information.
+If the documents don't contain enough information to answer, say exactly:
+"I don't have enough information on that."
+Every statement in your answer must be supported by the documents below.
+Be concise: answer in 2-5 sentences.
 
 **How source attribution is surfaced in the response:**
-
+In responses, source attribution surfaces at the end in a currated list of sources. It displays all of the sources it pulled from to answer. 
 ---
 
 ## Evaluation Report
 
-<!-- Run your 5 test questions from planning.md through your system and record the results.
-     Be honest — a partially accurate or inaccurate result that you explain well is more
-     valuable than a suspiciously perfect result. -->
-
 | # | Question | Expected answer | System response (summarized) | Retrieval quality | Response accuracy |
 |---|----------|-----------------|------------------------------|-------------------|-------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 |What do residents say about BEAL properties? |Do not rent from these properties. |Residents advise avoiding Beal properties |Relavent |Accurate |
+| 2 |What do residents say about the Depot Town area? |Nice with affordable rent. |Residents describe Depot Town as the "most ideal" area |Relavent |Accurate |
+| 3 |Would past residents recommend living at Lakeshore? |Yes, they would recommend it. |Yes, past residents would recommend living at Lakeshore. |Relavent |Accurate |
+| 4 |Is the community around Lakeshore walkable? |No, you need a car to get places. |The community around Lakeshore is not considered walkable |Relavent |Accurate |
+| 5 |Should a student rent at Aspen Chase or Waverly on the Lake? |Waverly on the Lake. |Waverly on the lake is considered better but is still on the list of places to avoid. |Relavent |Partially Accurate |
 
 **Retrieval quality:** Relevant / Partially relevant / Off-target  
 **Response accuracy:** Accurate / Partially accurate / Inaccurate
@@ -102,57 +83,34 @@ Off-campus housing reviews for Eastern Michigan University — useful because ro
 
 ## Failure Case Analysis
 
-<!-- Identify at least one question where retrieval or generation did not work as expected.
-     Write a specific explanation of *why* it failed, tied to a part of the pipeline.
-
-     "The answer was wrong" is not an explanation.
-
-     "The relevant information was split across a chunk boundary, so retrieval returned
-     only half the context — the model didn't have enough to answer correctly" is an explanation.
-
-     "The embedding model treated the professor's nickname as out-of-vocabulary and returned
-     results from an unrelated review" is an explanation. -->
-
 **Question that failed:**
-
+Which apartment is closest to campus?
 **What the system returned:**
-
+According to the documents, Red Lion apartments are less than 5 minutes from campus, making them one of the closest options. Additionally, an apartment that is closest to the campus is considered safest, as EMU police are nearby. Another option is Barnes, which is one of the better rental companies around campus.
 **Root cause (tied to a specific pipeline stage):**
-
+The root came in the document ingestion stage. The documents provide little detail when it comes to proximity to campus. So the only option that mentions it gets flagged.
 **What you would change to fix it:**
-
+I would add more documents about housing location in relation to campus.
 ---
 
 ## Spec Reflection
 
-<!-- Reflect on how planning.md shaped your implementation.
-     Answer both questions with at least 2–3 sentences each. -->
-
 **One way the spec helped you during implementation:**
-
+It made me slow down production and really plan out what I need to develop. There was intention put behind all the steps. Also, having a set plan before development helped me with comprehension with what the AI wrote.
 **One way your implementation diverged from the spec, and why:**
-
+My implementation diverged from my plan during chunking. Originally the plan was to have a overlap of 60 characters. But, during working with the model it proved to be unneccesary. The overlap was adjusted down to the sweet spot of 50 characters.
 ---
 
 ## AI Usage
 
-<!-- Describe at least 2 specific instances where you used an AI tool during this project.
-     For each: what did you give the AI as input, what did it produce, and what did you
-     change, override, or direct differently?
-
-     "I used Claude to help me code" is not sufficient.
-     "I gave Claude my Chunking Strategy section from planning.md and asked it to implement
-     chunk_text(). It returned a function using a fixed character split. I overrode the
-     chunk size from 500 to 200 because my documents are short reviews, not long guides." -->
-
 **Instance 1**
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+- *What I gave the AI:* I gave Claude my Chunking Strategy section from planning.md and asked it to implement chunk_text().
+- *What it produced:* It returned a function using a fixed character split.
+- *What I changed or overrode:* I overrode the chunk size from 60 to 50 because during testing the extra 10 characters became redundant. 50 characters performed with the same accuracy.
 
 **Instance 2**
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+- *What I gave the AI:* I gave Claude my retrieval approach section from planning.md and asked it to implement mbed_and_store().
+- *What it produced:* It produced a function that used my eval test questions as the questions to test the retieval every time.
+- *What I changed or overrode:* I overrode the static questions and implemented the program to prompt the user to give a question.
